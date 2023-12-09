@@ -1,0 +1,32 @@
+- Permitir seleção por uf e cidade (UF deve listar as cidades)
+
+Partidas
+	- Detalhamento de quantidade de operação 
+	- Total de partidas
+	- Detalhamento da pontualidade das partidas por aeroporto , empresa
+	- total por faixa de atraso
+
+
+Chegadas
+
+
+- Detalhar tempo de duração entre os voos,
+	ou seja, escolhe a rota e lista o tempo de duração por compania
+
+
+------------------------
+a) N - Doméstica Mista: para operações de transporte aéreo de passageiros ou mistas, em que todos os aeródromos envolvidos estejam situados simultaneamente em território brasileiro;
+
+b) C - Doméstica Cargueira: para operações de transporte aéreo exclusivo de carga e/ou mala postal em que todos os aeródromos envolvidos estejam situados simultaneamente em território brasileiro;
+
+c) I - Internacional Mista: para operações de transporte aéreo de passageiros ou mistas, em que ao menos um dos aeródromos envolvidos esteja situado em território estrangeiro;
+
+d) G - Internacional Cargueira: para operações de transporte aéreo exclusivo de carga e/ou rede postal em que ao menos um dos aeródromos envolvidos esteja situado em território estrangeiro;
+
+
+--------------------------------------GRANULALIDADE--------------
+CODIGO_TIPO_LINHA -> MÊS (JANEIRO) -> DIA (SEGUNDA a DOMINGO) -> UF(PA) -> MUNICIPIO_PARTIDA -> AEROPORTO_PARTIDA -> EMPRESA
+
+
+base_voo['FIM_DE_SEMANA_PARTIDA_PREVISTA'] = base_voo['INDICE_SEMANA_PARTIDA_PREVISTA'].apply(obter_fim_de_semana)
+base_voo['FIM_DE_SEMANA_PARTIDA_REAL']
