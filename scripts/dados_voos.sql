@@ -1,7 +1,9 @@
 CREATE DATABASE DADOS_VOO;
+SELECT current_date;
 
+SELECT data_extracao,  turno_extracao,  total_visualizacoes_turno  FROM youtube.TOTAL_VISUALIZACOES_POR_SEMANA  where assunto = "assunto_cities_skylines"  AND ID_CANAL="UC1mk6EtfMjxR4eEZ7C43zTQ"  AND  data_extracao in ("2023-10-22" , "2023-10-21")
 
-
+SELECT data_extracao,  turno_extracao,  total_visualizacoes_turno  FROM youtube.TOTAL_VISUALIZACOES_POR_SEMANA  where assunto = "assunto_cities_skylines"  AND ID_CANAL="UCMqGy4xIIGs01ZVcBv0B8Cw"  AND  data_extracao in ("2023-10-22" , "2023-10-21")
 CREATE EXTERNAL TABLE EXPLORACAO_FAIXA_ATRASO_PARTIDA (
     NUMERO_VOO INT,
     NOME_AEROPORTO_ORIGEM STRING,
