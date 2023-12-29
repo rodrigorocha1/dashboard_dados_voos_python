@@ -5,6 +5,13 @@ st.title("Análise de dados dos Vôos do Ano de 2022")
 
 col1, col2, col3, col4 = st.columns(4)
 
+with st.sidebar:
+    radio = st.radio(
+        "Opção",
+        [1, 2, 3],
+        horizontal=True,
+    )
+
 with col1:
     opcao = st.radio("Opção", [1, 2, 3], horizontal=True, captions="Teste")
 
