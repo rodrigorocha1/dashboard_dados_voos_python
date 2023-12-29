@@ -25,15 +25,15 @@ class GeradorConsulta:
     def obter_situacao_voo(
         self,
         sigla_aeroporto: str,
-        mes_partida_prevista: List[int],
         codigo_tipo_linha: str,
+        mes_partida_prevista: List[int] = None,
         sigla_empresa: str = None,
     ) -> pd.DataFrame:
         """Método para quantificar a situação do vôo por aeroporto origem
 
         Args:
             sigla_aeroporto (str): sigla do aeroporo
-            mes_partida_prevista (List[int]): mês de partida do aeroporto de origem
+            mes_partida_prevista (List[int], optional): mês de partida do aeroporto de origem
             codigo_tipo_linha (str): código do tipo de linha
             sigla_empresa (str, optional): sigla da empresa (não obrigatório). Defaults to None.
 
@@ -45,9 +45,11 @@ class GeradorConsulta:
 
         query = (
             f' SIGLA_ICAO_AEROPORTO_ORIGEM == "{sigla_aeroporto}" '
-            f" and MES_PARTIDA_PREVISTA in {mes_partida_prevista}"
             f' and CODIGO_TIPO_LINHA == "{codigo_tipo_linha}"'
         )
+        if mes_partida_prevista is not None:
+            query += f" and MES_PARTIDA_PREVISTA in {mes_partida_prevista}"
+
         colunas = [
             "SITUACAO_VOO",
             "MES_PARTIDA_PREVISTA",

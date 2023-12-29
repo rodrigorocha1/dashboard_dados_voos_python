@@ -75,12 +75,13 @@ with st.container(border=True):
 
 with st.container():
     col1, col2 = st.columns(2)
-    # with col1:
-    #     dataframe_qt_voo = gerador_consulta.obter_situacao_voo(
-    #         codigo_tipo_linha=opcao_codigo_voo,
-    #         mes_partida_prevista=numero_mes,
-    #         sigla_aeroporto=nome_aeroporto_origem,
-    #         sigla_empresa=nome_empresa,
-    #     )
-    # with col2:
-    #     st.write("Coluna 2")
+    with col1:
+        dataframe_qt_voo = gerador_consulta.obter_situacao_voo(
+            codigo_tipo_linha=opcao_codigo_voo,
+            mes_partida_prevista=None,
+            sigla_aeroporto=nome_aeroporto_origem,
+            sigla_empresa=nome_empresa,
+        )
+        dataframe_qt_voo
+    with col2:
+        st.write("Coluna 2")
