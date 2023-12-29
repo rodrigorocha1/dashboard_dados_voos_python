@@ -74,15 +74,15 @@ class GeradorConsulta:
         dataframe = pd.concat([total, percentual], axis=1).reset_index()
         dataframe["TOTAL_SITUACAO"] = dataframe["count"].astype("int32")
         dataframe["PROPORCAO"] = dataframe["proportion"].astype("float32")
-        dataframe = dataframe.sort_values(by=["SITUACAO_VOO", "MES_PARTIDA_PREVISTA"])
+
         dataframe.drop(
             ["proportion", "count", "CODIGO_TIPO_LINHA"],
             axis=1,
             inplace=True,
         )
         dataframe["SITUACAO_VOO"] = dataframe["SITUACAO_VOO"].astype("string")
-        if sigla_empresa is not None:
-            dataframe = dataframe.sort_values(by="MES_PARTIDA_PREVISTA")
+        dataframe = dataframe.sort_values(by=["MES_PARTIDA_PREVISTA"])
+        print(dataframe)
         return dataframe
 
     @staticmethod
