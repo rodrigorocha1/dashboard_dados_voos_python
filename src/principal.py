@@ -83,12 +83,19 @@ with st.container():
             sigla_aeroporto=nome_aeroporto_origem,
             sigla_empresa=nome_empresa,
         )
+        titulo = (
+            f"Comparação da Situação dos Vôos do aeroporto {nome_aeroporto_origem} para a empresa {nome_empresa.split('-')[1]}"
+            if nome_empresa is not None
+            else f"Comparação da Situação dos Vôos do aeroporto {nome_aeroporto_origem} "
+        )
         visualizacao_qtd_voo = Visualizacao(dataframe=dataframe_qt_voo)
         fig = visualizacao_qtd_voo.gerar_visualizacao_grafico_barra(
             barmode="group",
             color="SITUACAO_VOO",
             coluna_x="NOME_MES_PARTIDA_PREVISTA",
             coluna_y="TOTAL_SITUACAO",
+            titulo_grafico=titulo,
+            cor_sequencia_legenda=["#1F3BB3", "#DC3545"],
         )
         st.plotly_chart(
             fig,
