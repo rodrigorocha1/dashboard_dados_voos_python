@@ -66,7 +66,7 @@ with st.container(border=True):
             situacao_voo="Cancelado",
         )
         if variacao_voo_cancelados.empty:
-            st.warning("Não há dados de vôos de cancelamento para a seleção")
+            st.warning("Não há dados de vôos cancelados para a seleção")
         else:
             st.metric(
                 label="Vôos Cancelados",
