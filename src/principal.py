@@ -48,7 +48,7 @@ with st.container(border=True):
             situacao_voo="Realizado",
         )
         if variacao_voo_realizado.empty:
-            st.metric("Não há Registro de Vôos")
+            st.warning("Não há dados de vôos realizados para a seleção")
         else:
             st.metric(
                 label="Vôos Realizados",
@@ -64,9 +64,8 @@ with st.container(border=True):
             sigla_empresa=nome_empresa,
             situacao_voo="Cancelado",
         )
-
         if variacao_voo_cancelados.empty:
-            st.metric("Não há Cancelamento Registrado")
+            st.warning("Não há dados de vôos de cancelamento para a seleção")
         else:
             st.metric(
                 label="Vôos Cancelados",
