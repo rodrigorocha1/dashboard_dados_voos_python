@@ -1,4 +1,5 @@
 import streamlit as st
+from src.depara.depara import *
 
 st.set_page_config(layout="wide", page_title="Dashboard dados vôos")
 st.title("Análise de dados dos Vôos do Ano de 2022")

@@ -1,12 +1,12 @@
 import pickle
-from typing import List
+from typing import Tuple
 
 
-def depara_empresas() -> List[str]:
-    """Método para abir o depara de empresas
+def depara_empresas() -> Tuple[str]:
+    """Função para retornar depara de empresas
 
     Returns:
-        List[str]: Uma lista de empresa unido ao código
+        Tuple[str]: Tupla com as companias
     """
     with open("lista_companias.pkl", "rb") as arq:
         lista_companias = pickle.load(arq)
