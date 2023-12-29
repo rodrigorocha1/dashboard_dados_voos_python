@@ -61,6 +61,8 @@ class Visualizacao:
         legenda_valor_atual: str,
         legenda_valor_anterior: str,
         titulo_grafico: str,
+        cor_grafico_barra: str,
+        cor_grafico_scatter: str,
     ):
         fig = go.Figure()
         fig.add_trace(
@@ -68,7 +70,7 @@ class Visualizacao:
                 x=self.__dataframe[coluna_x],
                 y=self.__dataframe[coluna_y_atual],
                 name=legenda_valor_atual,
-                marker=dict(color="#808191"),
+                marker=dict(color=cor_grafico_barra),
                 text=self.__dataframe[coluna_y_atual],
                 textposition="auto",
                 textfont=dict(color="white"),
@@ -80,7 +82,7 @@ class Visualizacao:
                 x=self.__dataframe[coluna_x],
                 y=self.__dataframe[coluna_y_anterior],
                 name=legenda_valor_anterior,
-                marker=dict(color="#D58D5D"),
+                marker=dict(color=cor_grafico_scatter),
             )
         )
         fig.update_layout(title=titulo_grafico)
