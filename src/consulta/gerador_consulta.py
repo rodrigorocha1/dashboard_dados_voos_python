@@ -81,11 +81,11 @@ class GeradorConsulta:
             inplace=True,
         )
         dataframe["SITUACAO_VOO"] = dataframe["SITUACAO_VOO"].astype("string")
-        print(dataframe)
+
         dataframe = dataframe.sort_values(
             by=["MES_PARTIDA_PREVISTA", "SITUACAO_VOO"], ascending=[True, False]
         )
-        print(dataframe)
+
         return dataframe
 
     @staticmethod
@@ -191,7 +191,7 @@ class GeradorConsulta:
         situacao_voo: str,
         mes_partida_prevista: List[int] = None,
         sigla_empresa: str = None,
-    ):
+    ) -> pd.DataFrame:
         """Método para obter a variação situação voo
 
         Args:
@@ -202,7 +202,7 @@ class GeradorConsulta:
             sigla_empresa (str, optional): sigla empresa. Defaults to None.
 
         Returns:
-            _type_: _description_
+            _type_: pd.DataFrame
         """
         dataframe = self.obter_situacao_voo(
             sigla_aeroporto=sigla_aeroporto,
@@ -216,4 +216,56 @@ class GeradorConsulta:
         ].shift(1)
         dataframe.fillna(0, axis=1, inplace=True)
         dataframe = dataframe.query(f' SITUACAO_VOO == "{situacao_voo}" ')
+        return dataframe
+
+    def obter_dados_voos_dia_semana(
+        self, sigla_aeroporto: str, mes_partida: int, sigla_empresa: str = None
+    ) -> pd.DataFrame:
+        """Método que compara a situação dos vôs por semana
+
+        Args:
+            sigla_aeroporto (str): sigla do aeroporto
+            mes_partida (int): mês partida
+            sigla_empresa (str, optional): sigla empresa. Defaults to None.
+
+        Returns:
+            pd.DataFrame: dataframe
+        """
+        colunas = [
+            "SITUACAO_VOO",
+            "MES_PARTIDA_PREVISTA",
+            "NOME_MES_PARTIDA_PREVISTA",
+            "SIGLA_ICAO_AEROPORTO_ORIGEM",
+            "NOME_AEROPORTO_ORIGEM",
+            "NOME_EMPRESA",
+            "INDICE_SEMANA_PARTIDA_PREVISTA",
+            "DIA_DA_SEMANA_PARTIDA_PREVISTA",
+        ]
+        query = f' SIGLA_ICAO_AEROPORTO_ORIGEM == "{sigla_aeroporto}" and MES_PARTIDA_PREVISTA == {mes_partida} '
+        if sigla_empresa is not None:
+            colunas.append("SIGLA_ICAO_EMPRESA_AEREA")
+            query += f'SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}" '
+
+        dataframe = self.__abrir_dataframe(colunas=colunas)
+
+        dataframe = dataframe.query(query)
+
+        dataframe[["DIA_DA_SEMANA_PARTIDA_PREVISTA", "SITUACAO_VOO"]] = dataframe[
+            ["DIA_DA_SEMANA_PARTIDA_PREVISTA", "SITUACAO_VOO"]
+        ].astype("string")
+        dataframe = (
+            dataframe.groupby(
+                [
+                    "DIA_DA_SEMANA_PARTIDA_PREVISTA",
+                    "INDICE_SEMANA_PARTIDA_PREVISTA",
+                    "SITUACAO_VOO",
+                ]
+            )
+            .agg(TOTAL_VOOS=("DIA_DA_SEMANA_PARTIDA_PREVISTA", "count"))
+            .reset_index()
+        )
+        dataframe = dataframe.sort_values(
+            by=["SITUACAO_VOO", "INDICE_SEMANA_PARTIDA_PREVISTA"],
+            ascending=[False, True],
+        )
         return dataframe
