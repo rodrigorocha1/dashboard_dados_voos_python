@@ -134,14 +134,18 @@ with st.container():
         if nome_empresa is not None
         else nome_empresa,
     )
-    df_dados_voos_dia_semana
     visualizacao_dados_voos_semana = Visualizacao(dataframe=df_dados_voos_dia_semana)
+    titulo = (
+        f"Dados de Vôos Semanais do aeroporto {nome_aeroporto_origem.split('-')[1]} para a empresa {nome_empresa.split('-')[1]}"
+        if nome_empresa is not None
+        else f"Dados de Vôos Semanais {situacao_voo.lower()}  do aeroporto {nome_aeroporto_origem.split('-')[1]} "
+    )
     fig = visualizacao_dados_voos_semana.gerar_visualizacao_grafico_barra(
         coluna_x="DIA_DA_SEMANA_PARTIDA_PREVISTA",
         coluna_y="TOTAL_VOOS",
         barmode="group",
         color="SITUACAO_VOO",
-        cor_sequencia_legenda=None,
-        titulo_grafico=None,
+        cor_sequencia_legenda=["#1F3BB3", "#DC3545"],
+        titulo_grafico=titulo,
     )
     st.plotly_chart(fig)
