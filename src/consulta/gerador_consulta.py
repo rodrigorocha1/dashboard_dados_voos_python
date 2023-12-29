@@ -183,3 +183,25 @@ class GeradorConsulta:
         ]
 
         return dataframe
+
+    def obter_variacao_situacao_voo(
+        self,
+        sigla_aeroporto: str,
+        codigo_tipo_linha: str,
+        situacao_voo: str,
+        mes_partida_prevista: List[int] = None,
+        sigla_empresa: str = None,
+    ):
+        dataframe = self.obter_situacao_voo(
+            sigla_aeroporto=sigla_aeroporto,
+            mes_partida_prevista=mes_partida_prevista,  # [1,2]
+            codigo_tipo_linha=codigo_tipo_linha,
+            sigla_empresa=sigla_empresa,
+        )
+        dataframe.drop("PROPORCAO", axis=1, inplace=True)
+        dataframe["TOTAL_SITUACAO_MES_ANTERIOR"] = dataframe.groupby("SITUACAO_VOO")[
+            "TOTAL_SITUACAO"
+        ].shift(1)
+        dataframe.fillna(0, axis=1, inplace=True)
+        dataframe = dataframe.query(f' SITUACAO_VOO == "{situacao_voo}" ')
+        return dataframe
