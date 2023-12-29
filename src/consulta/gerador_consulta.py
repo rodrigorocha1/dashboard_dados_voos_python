@@ -40,6 +40,9 @@ class GeradorConsulta:
         Returns:
             pd.DataFrame: Dataframe
         """
+        sigla_aeroporto = sigla_aeroporto.split("-")[0]
+        codigo_tipo_linha = codigo_tipo_linha.split("-")[0]
+
         query = (
             f' SIGLA_ICAO_AEROPORTO_ORIGEM == "{sigla_aeroporto}" '
             f" and MES_PARTIDA_PREVISTA in {mes_partida_prevista}"
@@ -54,6 +57,7 @@ class GeradorConsulta:
         ]
 
         if sigla_empresa is not None:
+            sigla_empresa = sigla_empresa.split("-")[0]
             query += f' and SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}" '
             colunas.append("SIGLA_ICAO_EMPRESA_AEREA")
 
@@ -120,7 +124,7 @@ class GeradorConsulta:
         """
         codigo_tipo_linha = codigo_tipo_linha.split("-")[0]
         sigla_aeroporto = sigla_aeroporto.split("-")[0]
-        sigla_empresa = sigla_empresa.split("-")[0]
+
         colunas = [
             "SITUACAO_VOO",
             "MES_PARTIDA_PREVISTA",

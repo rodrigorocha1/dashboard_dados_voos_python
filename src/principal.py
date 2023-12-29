@@ -18,10 +18,10 @@ with st.sidebar:
         index=0,
     )
     numero_mes = st.number_input(
-        "Escolha o mês", min_value=1, max_value=12, key="int", value=2
+        "Escolha o mês", min_value=1, max_value=12, key="int", value=12
     )
     nome_empresa = st.selectbox(
-        "Escolha a empresa", obter_depara_empresas(opcao_codigo_voo)
+        "Escolha a empresa", obter_depara_empresas(opcao_codigo_voo), index=None
     )
     nome_aeroporto_origem = st.selectbox(
         "Escolha o aeroporto de origem",
@@ -44,7 +44,7 @@ with st.container(border=True):
             sigla_aeroporto=nome_aeroporto_origem,
             mes_partida=numero_mes,
             codigo_tipo_linha=opcao_codigo_voo,
-            sigla_empresa=nome_empresa,
+            # sigla_empresa=nome_empresa,
             situacao_voo="Realizado",
         )
         if variacao_voo_realizado.empty:
@@ -61,7 +61,7 @@ with st.container(border=True):
             sigla_aeroporto=nome_aeroporto_origem,
             mes_partida=numero_mes,
             codigo_tipo_linha=opcao_codigo_voo,
-            sigla_empresa=nome_empresa,
+            # sigla_empresa=nome_empresa,
             situacao_voo="Cancelado",
         )
         if variacao_voo_cancelados.empty:
@@ -69,6 +69,18 @@ with st.container(border=True):
         else:
             st.metric(
                 label="Vôos Cancelados",
-                value=float(variacao_voo_cancelados["TOTAL_SITUACAO"].values),
+                value=int(variacao_voo_cancelados["TOTAL_SITUACAO"].values),
                 delta=float(variacao_voo_cancelados["PERCENTUAL_VARIACAO"].values),
             )
+
+with st.container():
+    col1, col2 = st.columns(2)
+    # with col1:
+    #     dataframe_qt_voo = gerador_consulta.obter_situacao_voo(
+    #         codigo_tipo_linha=opcao_codigo_voo,
+    #         mes_partida_prevista=numero_mes,
+    #         sigla_aeroporto=nome_aeroporto_origem,
+    #         sigla_empresa=nome_empresa,
+    #     )
+    # with col2:
+    #     st.write("Coluna 2")
