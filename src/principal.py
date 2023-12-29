@@ -108,6 +108,11 @@ with st.container():
             sigla_empresa=nome_empresa,
             situacao_voo=situacao_voo,
         )
+        titulo = (
+            f"Variação des Vôos {situacao_voo.lower()} do aeroporto {nome_aeroporto_origem.split('-')[1]} para a empresa {nome_empresa.split('-')[1]}"
+            if nome_empresa is not None
+            else f"Variação des Vôos {situacao_voo.lower()}  do aeroporto {nome_aeroporto_origem.split('-')[1]} "
+        )
         visualizacao_variacao_voo = Visualizacao(dataframe=df_variacao_voo)
         fig = visualizacao_variacao_voo.gerar_grafico_variacao_voo(
             coluna_x="NOME_MES_PARTIDA_PREVISTA",
@@ -115,6 +120,7 @@ with st.container():
             coluna_y_anterior="TOTAL_SITUACAO_MES_ANTERIOR",
             legenda_valor_atual="Valor Mês atual",
             legenda_valor_anterior="Valor Mês anterior",
+            titulo_grafico=titulo,
         )
         st.plotly_chart(
             fig,

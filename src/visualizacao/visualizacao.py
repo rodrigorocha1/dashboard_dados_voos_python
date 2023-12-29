@@ -46,7 +46,7 @@ class Visualizacao:
             # plotly_bgcolor=None,
             xaxis=dict(title="", tickfont=dict(color="white")),
             legend=dict(font=dict(color="white")),
-            width=650,
+            width=600,
             legend_title=dict(text="Situação Vôo", font=dict(size=16)),
         )
 
@@ -60,25 +60,18 @@ class Visualizacao:
         coluna_y_anterior: str,
         legenda_valor_atual: str,
         legenda_valor_anterior: str,
+        titulo_grafico: str,
     ):
-        """_summary_
-
-        Args:
-            coluna_x (str): _description_
-            coluna_y_atual (str): _description_
-            coluna_y_anterior (str): _description_
-            legenda_valor_atual (str): _description_
-            legenda_valor_anterior (str): _description_
-
-        Returns:
-            _type_: _description_
-        """
         fig = go.Figure()
         fig.add_trace(
             go.Bar(
                 x=self.__dataframe[coluna_x],
                 y=self.__dataframe[coluna_y_atual],
                 name=legenda_valor_atual,
+                marker=dict(color="#808191"),
+                text=self.__dataframe[coluna_y_atual],
+                textposition="auto",
+                textfont=dict(color="white"),
             )
         )
 
@@ -87,7 +80,8 @@ class Visualizacao:
                 x=self.__dataframe[coluna_x],
                 y=self.__dataframe[coluna_y_anterior],
                 name=legenda_valor_anterior,
+                marker=dict(color="#D58D5D"),
             )
         )
-        fig.update_layout(title="Teste")
+        fig.update_layout(title=titulo_grafico)
         return fig
