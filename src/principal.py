@@ -28,15 +28,24 @@ with st.sidebar:
     situacao = st.radio(
         "Escolha a situação do vôo",
         [
-            "Realizado",
-            "Cancelado",
+            "REALIZADO",
+            "CANCELADO",
         ],
         index=0,
     )
 
 with st.container(border=True):
     col1, col2 = st.columns([3, 2])
+    gerador_consulta = GeradorConsulta()
     with col1:
+        variacao_voo_realizado = gerador_consulta.obter_variacao_percentual(
+            sigla_aeroporto=nome_aeroporto_origem,
+            mes_partida=numero_mes,
+            codigo_tipo_linha=opcao_codigo_voo,
+            sigla_empresa=nome_empresa,
+            situacao_voo="Realizado",
+        )
+        variacao_voo_realizado
         st.metric(label="Vôos Realizados", value="70 F", delta="1.2F")
     with col2:
         st.metric(label="Vôos Cancelados", value="70 F", delta="1.2F")

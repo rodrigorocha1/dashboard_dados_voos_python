@@ -118,6 +118,9 @@ class GeradorConsulta:
         Returns:
             pd.DataFrame: dataframe
         """
+        codigo_tipo_linha = codigo_tipo_linha.split("-")[0]
+        sigla_aeroporto = sigla_aeroporto.split("-")[0]
+        sigla_empresa = sigla_empresa.split("-")[0]
         colunas = [
             "SITUACAO_VOO",
             "MES_PARTIDA_PREVISTA",
@@ -136,7 +139,9 @@ class GeradorConsulta:
             colunas.append("SIGLA_ICAO_EMPRESA_AEREA")
 
         dataframe = self.__abrir_dataframe(colunas=colunas)
+
         dataframe = dataframe.query(query)
+
         dataframe[["SITUACAO_VOO", "NOME_MES_PARTIDA_PREVISTA"]] = dataframe[
             ["SITUACAO_VOO", "NOME_MES_PARTIDA_PREVISTA"]
         ].astype("string")
@@ -152,10 +157,15 @@ class GeradorConsulta:
             "TOTAL_SITUACAO"
         ].shift(1)
         dataframe.fillna(0, axis=1, inplace=True)
+
         dataframe["PERCENTUAL_VARIACAO"] = dataframe.apply(
             self.calcular_variacao, axis=1
         )
-        query = f'SITUACAO_VOO == "{situacao_voo}" and MES_PARTIDA_PREVISTA == {mes_partida}'
+
+        query = f'SITUACAO_VOO == "{situacao_voo.upper()}" and MES_PARTIDA_PREVISTA == {mes_partida}'
+        dataframe["MES_PARTIDA_PREVISTA"] = dataframe["MES_PARTIDA_PREVISTA"].astype(
+            "int32"
+        )
 
         dataframe = dataframe.query(query)[
             ["TOTAL_SITUACAO", "TOTAL_SITUACAO_MES_ANTERIOR", "PERCENTUAL_VARIACAO"]
