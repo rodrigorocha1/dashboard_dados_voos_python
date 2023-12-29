@@ -28,7 +28,7 @@ with st.sidebar:
         "Escolha o aeroporto de origem",
         obter_depara_aeroporto(codigo_tipo_linha=opcao_codigo_voo),
     )
-    situacao = st.radio(
+    situacao_voo = st.radio(
         "Escolha a situação do vôo",
         [
             "REALIZADO",
@@ -102,4 +102,20 @@ with st.container():
         )
 
     with col2:
-        st.write("Coluna 2")
+        df_variacao_voo = gerador_consulta.obter_variacao_situacao_voo(
+            sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+            codigo_tipo_linha=opcao_codigo_voo.split("-")[0],
+            sigla_empresa=nome_empresa,
+            situacao_voo=situacao_voo,
+        )
+        visualizacao_variacao_voo = Visualizacao(dataframe=df_variacao_voo)
+        fig = visualizacao_variacao_voo.gerar_grafico_variacao_voo(
+            coluna_x="NOME_MES_PARTIDA_PREVISTA",
+            coluna_y_atual="TOTAL_SITUACAO",
+            coluna_y_anterior="TOTAL_SITUACAO_MES_ANTERIOR",
+            legenda_valor_atual="Valor Mês atual",
+            legenda_valor_anterior="Valor Mês anterior",
+        )
+        st.plotly_chart(
+            fig,
+        )
