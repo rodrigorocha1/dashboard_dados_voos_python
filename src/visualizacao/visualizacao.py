@@ -48,5 +48,5 @@ class Visualizacao:
             legend=dict(font=dict(color="white")),
         )
 
-        fig.update_traces(textfont_color="white")
+        fig.update_traces(textfont_color="white", textposition="outside")
         return fig
