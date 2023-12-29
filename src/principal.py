@@ -1,5 +1,5 @@
 import streamlit as st
-from depara.depara import depara_empresas
+from depara.depara import obter_depara_empresas
 
 st.set_page_config(layout="wide", page_title="Dashboard dados vôos")
 st.title("Análise de dados dos Vôos do Ano de 2022")
@@ -17,7 +17,9 @@ with st.sidebar:
         index=0,
     )
     numero_mes = st.number_input("Escolha o mês", min_value=1, max_value=12, key="int")
-    nome_empresa = st.selectbox("Escolha a empresa", depara_empresas())
+    nome_empresa = st.selectbox(
+        "Escolha a empresa", obter_depara_empresas(opcao_codigo_voo)
+    )
 
 
 with st.container(border=True):
