@@ -84,9 +84,9 @@ with st.container():
             sigla_empresa=nome_empresa,
         )
         titulo = (
-            f"Comparação da Situação dos Vôos do aeroporto {nome_aeroporto_origem} para a empresa {nome_empresa.split('-')[1]}"
+            f"Comparação da Situação dos Vôos do aeroporto {nome_aeroporto_origem.split('-')[1]} para a empresa {nome_empresa.split('-')[1]}"
             if nome_empresa is not None
-            else f"Comparação da Situação dos Vôos do aeroporto {nome_aeroporto_origem} "
+            else f"Comparação da Situação dos Vôos do aeroporto {nome_aeroporto_origem.split('-')[1]} "
         )
         visualizacao_qtd_voo = Visualizacao(dataframe=dataframe_qt_voo)
         fig = visualizacao_qtd_voo.gerar_visualizacao_grafico_barra(
