@@ -46,7 +46,48 @@ class Visualizacao:
             # plotly_bgcolor=None,
             xaxis=dict(title="", tickfont=dict(color="white")),
             legend=dict(font=dict(color="white")),
+            width=650,
+            legend_title=dict(text="Situação Vôo", font=dict(size=16)),
         )
 
         fig.update_traces(textfont_color="white", textposition="outside")
+        return fig
+
+    def gerar_grafico_variacao_voo(
+        self,
+        coluna_x: str,
+        coluna_y_atual: str,
+        coluna_y_anterior: str,
+        legenda_valor_atual: str,
+        legenda_valor_anterior: str,
+    ):
+        """_summary_
+
+        Args:
+            coluna_x (str): _description_
+            coluna_y_atual (str): _description_
+            coluna_y_anterior (str): _description_
+            legenda_valor_atual (str): _description_
+            legenda_valor_anterior (str): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        fig = go.Figure()
+        fig.add_trace(
+            go.Bar(
+                x=self.__dataframe[coluna_x],
+                y=self.__dataframe[coluna_y_atual],
+                name=legenda_valor_atual,
+            )
+        )
+
+        fig.add_trace(
+            go.Scatter(
+                x=self.__dataframe[coluna_x],
+                y=self.__dataframe[coluna_y_anterior],
+                name=legenda_valor_anterior,
+            )
+        )
+        fig.update_layout(title="Teste")
         return fig
