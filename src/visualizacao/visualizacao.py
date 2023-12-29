@@ -42,7 +42,7 @@ class Visualizacao:
         fig.update_layout(
             title_text=titulo_grafico,
             showlegend=True,
-            title=dict(x=0.1, font=dict(color="white", size=12)),
+            title=dict(x=0.1, font=dict(color="white", size=14)),
             # plotly_bgcolor=None,
             xaxis=dict(title="", tickfont=dict(color="white")),
             legend=dict(font=dict(color="white")),
