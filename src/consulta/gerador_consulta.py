@@ -163,6 +163,7 @@ class GeradorConsulta:
         )
 
         query = f'SITUACAO_VOO == "{situacao_voo.upper()}" and MES_PARTIDA_PREVISTA == {mes_partida}'
+
         dataframe["MES_PARTIDA_PREVISTA"] = dataframe["MES_PARTIDA_PREVISTA"].astype(
             "int32"
         )
