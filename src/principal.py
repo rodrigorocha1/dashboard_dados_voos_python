@@ -1,5 +1,6 @@
 import streamlit as st
 from depara.depara import obter_depara_empresas, obter_depara_aeroporto
+from visualizacao.visualizacao import Visualizacao
 from consulta.gerador_consulta import GeradorConsulta
 
 st.set_page_config(layout="wide", page_title="Dashboard dados vôos")
@@ -82,6 +83,16 @@ with st.container():
             sigla_aeroporto=nome_aeroporto_origem,
             sigla_empresa=nome_empresa,
         )
-        dataframe_qt_voo
+        visualizacao_qtd_voo = Visualizacao(dataframe=dataframe_qt_voo)
+        fig = visualizacao_qtd_voo.gerar_visualizacao_grafico_barra(
+            barmode="group",
+            color="SITUACAO_VOO",
+            coluna_x="NOME_MES_PARTIDA_PREVISTA",
+            coluna_y="TOTAL_SITUACAO",
+        )
+        st.plotly_chart(
+            fig,
+        )
+
     with col2:
         st.write("Coluna 2")
