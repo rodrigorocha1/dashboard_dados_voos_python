@@ -44,7 +44,7 @@ with st.container(border=True):
             sigla_aeroporto=nome_aeroporto_origem,
             mes_partida=numero_mes,
             codigo_tipo_linha=opcao_codigo_voo,
-            # sigla_empresa=nome_empresa,
+            sigla_empresa=nome_empresa,
             situacao_voo="Realizado",
         )
         if variacao_voo_realizado.empty:
@@ -61,7 +61,7 @@ with st.container(border=True):
             sigla_aeroporto=nome_aeroporto_origem,
             mes_partida=numero_mes,
             codigo_tipo_linha=opcao_codigo_voo,
-            # sigla_empresa=nome_empresa,
+            sigla_empresa=nome_empresa,
             situacao_voo="Cancelado",
         )
         if variacao_voo_cancelados.empty:
