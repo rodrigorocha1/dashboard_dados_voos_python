@@ -125,3 +125,23 @@ with st.container():
         st.plotly_chart(
             fig,
         )
+
+with st.container():
+    df_dados_voos_dia_semana = gerador_consulta.obter_dados_voos_dia_semana(
+        sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+        mes_partida=numero_mes,
+        sigla_empresa=nome_empresa.split("-")[0]
+        if nome_empresa is not None
+        else nome_empresa,
+    )
+    df_dados_voos_dia_semana
+    visualizacao_dados_voos_semana = Visualizacao(dataframe=df_dados_voos_dia_semana)
+    fig = visualizacao_dados_voos_semana.gerar_visualizacao_grafico_barra(
+        coluna_x="DIA_DA_SEMANA_PARTIDA_PREVISTA",
+        coluna_y="TOTAL_VOOS",
+        barmode="group",
+        color="SITUACAO_VOO",
+        cor_sequencia_legenda=None,
+        titulo_grafico=None,
+    )
+    st.plotly_chart(fig)
