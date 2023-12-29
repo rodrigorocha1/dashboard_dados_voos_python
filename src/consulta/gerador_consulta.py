@@ -81,6 +81,7 @@ class GeradorConsulta:
             inplace=True,
         )
         dataframe["SITUACAO_VOO"] = dataframe["SITUACAO_VOO"].astype("string")
+        print(dataframe)
         dataframe = dataframe.sort_values(by=["MES_PARTIDA_PREVISTA"])
         print(dataframe)
         return dataframe
