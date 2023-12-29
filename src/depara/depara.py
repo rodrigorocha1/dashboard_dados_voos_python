@@ -1,11 +1,10 @@
 import pickle
 from typing import Tuple
-import pandas as pd
 import os
+import pandas as pd
 
 
 CAMINHO_BASE = os.getcwd()
-print(os.path.join(CAMINHO_BASE, "src", "depara", "lista_companias.pkl"))
 
 
 def obter_depara_empresas(codigo_tipo_linha: str) -> Tuple[str]:
