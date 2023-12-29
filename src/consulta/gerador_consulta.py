@@ -192,6 +192,18 @@ class GeradorConsulta:
         mes_partida_prevista: List[int] = None,
         sigla_empresa: str = None,
     ):
+        """Método para obter a variação situação voo
+
+        Args:
+            sigla_aeroporto (str): sigla do aeroporto
+            codigo_tipo_linha (str): código da linha
+            situacao_voo (str): situação vooo
+            mes_partida_prevista (List[int], optional): mês da partida prevista. Defaults to None.
+            sigla_empresa (str, optional): sigla empresa. Defaults to None.
+
+        Returns:
+            _type_: _description_
+        """
         dataframe = self.obter_situacao_voo(
             sigla_aeroporto=sigla_aeroporto,
             mes_partida_prevista=mes_partida_prevista,  # [1,2]
