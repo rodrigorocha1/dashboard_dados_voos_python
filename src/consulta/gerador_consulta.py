@@ -139,13 +139,14 @@ class GeradorConsulta:
             f' and  CODIGO_TIPO_LINHA == "{codigo_tipo_linha}" '
         )
         if sigla_empresa is not None:
+            sigla_empresa = sigla_empresa.split("-")[0]
             query += f' and SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}"  '
             colunas.append("SIGLA_ICAO_EMPRESA_AEREA")
 
         dataframe = self.__abrir_dataframe(colunas=colunas)
 
         dataframe = dataframe.query(query)
-
+        print(query)
         dataframe[["SITUACAO_VOO", "NOME_MES_PARTIDA_PREVISTA"]] = dataframe[
             ["SITUACAO_VOO", "NOME_MES_PARTIDA_PREVISTA"]
         ].astype("string")
