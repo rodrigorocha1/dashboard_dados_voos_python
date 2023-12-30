@@ -244,7 +244,7 @@ class GeradorConsulta:
         query = f' SIGLA_ICAO_AEROPORTO_ORIGEM == "{sigla_aeroporto}" and MES_PARTIDA_PREVISTA == {mes_partida} '
         if sigla_empresa is not None:
             colunas.append("SIGLA_ICAO_EMPRESA_AEREA")
-            query += f'SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}" '
+            query += f' and SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}" '
 
         dataframe = self.__abrir_dataframe(colunas=colunas)
 
@@ -294,9 +294,9 @@ class GeradorConsulta:
         )
 
         if sigla_empresa is not None:
-            query += f' SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}"'
+            query += f' and SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}"'
             colunas.append("SIGLA_ICAO_EMPRESA_AEREA")
-
+        print(query)
         dataframe = self.__abrir_dataframe(colunas=colunas)
         dataframe = dataframe.query(query)
 
