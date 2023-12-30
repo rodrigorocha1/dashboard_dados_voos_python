@@ -121,31 +121,84 @@ with st.container():
             legenda_valor_atual="Valor Mês atual",
             legenda_valor_anterior="Valor Mês anterior",
             titulo_grafico=titulo,
+            cor_grafico_barra="#808191",
+            cor_grafico_scatter="#D58D5D",
         )
         st.plotly_chart(
             fig,
         )
 
 with st.container():
-    df_dados_voos_dia_semana = gerador_consulta.obter_dados_voos_dia_semana(
-        sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
-        mes_partida=numero_mes,
-        sigla_empresa=nome_empresa.split("-")[0]
-        if nome_empresa is not None
-        else nome_empresa,
-    )
-    visualizacao_dados_voos_semana = Visualizacao(dataframe=df_dados_voos_dia_semana)
-    titulo = (
-        f"Dados de Vôos Semanais do aeroporto {nome_aeroporto_origem.split('-')[1]} para a empresa {nome_empresa.split('-')[1]}"
-        if nome_empresa is not None
-        else f"Dados de Vôos Semanais {situacao_voo.lower()}  do aeroporto {nome_aeroporto_origem.split('-')[1]} "
-    )
-    fig = visualizacao_dados_voos_semana.gerar_visualizacao_grafico_barra(
-        coluna_x="DIA_DA_SEMANA_PARTIDA_PREVISTA",
-        coluna_y="TOTAL_VOOS",
-        barmode="group",
-        color="SITUACAO_VOO",
-        cor_sequencia_legenda=["#1F3BB3", "#DC3545"],
-        titulo_grafico=titulo,
-    )
-    st.plotly_chart(fig)
+    col1, col2 = st.columns(2)
+    with col1:
+        df_dados_voos_dia_semana = gerador_consulta.obter_dados_voos_dia_semana(
+            sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+            mes_partida=numero_mes,
+            sigla_empresa=nome_empresa.split("-")[0]
+            if nome_empresa is not None
+            else nome_empresa,
+        )
+        visualizacao_dados_voos_semana = Visualizacao(
+            dataframe=df_dados_voos_dia_semana
+        )
+        titulo = (
+            f"Dados de Vôos Semanais do aeroporto {nome_aeroporto_origem.split('-')[1]} para a empresa {nome_empresa.split('-')[1]}"
+            if nome_empresa is not None
+            else f"Dados de Vôos Semanais {situacao_voo.lower()}  do aeroporto {nome_aeroporto_origem.split('-')[1]} "
+        )
+        fig = visualizacao_dados_voos_semana.gerar_visualizacao_grafico_barra(
+            coluna_x="DIA_DA_SEMANA_PARTIDA_PREVISTA",
+            coluna_y="TOTAL_VOOS",
+            barmode="group",
+            color="SITUACAO_VOO",
+            cor_sequencia_legenda=["#1F3BB3", "#DC3545"],
+            titulo_grafico=titulo,
+        )
+        st.plotly_chart(fig)
+    with col2:
+        tab_partida, tab_chegada = st.tabs(
+            ["Incidencia de atraso da partida", "Incidencia de atraso da chegada"]
+        )
+        with tab_partida:
+            df_incidencia_atraso = gerador_consulta.obter_variacao_flag_atraso(
+                flag_partida_chegada="PARTIDA",
+                flag_atraso="Vôo Atrasado",
+                sigla_empresa=nome_empresa.split("-")[0]
+                if nome_empresa is not None
+                else nome_empresa,
+                sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+            )
+            visualizacao_incidencia = Visualizacao(dataframe=df_incidencia_atraso)
+            fig = visualizacao_incidencia.gerar_grafico_variacao_voo(
+                coluna_x="NOME_MES_PARTIDA_PREVISTA",
+                coluna_y_atual="TOTAL_ATRASO",
+                coluna_y_anterior="TOTAL_ATRASO_DESLOCADO",
+                cor_grafico_barra="#198754",
+                cor_grafico_scatter=None,
+                legenda_valor_anterior="Valor Mês anterior",
+                legenda_valor_atual="Valor Mês atual",
+                titulo_grafico="Teste",
+            )
+            st.plotly_chart(fig)
+
+        with tab_chegada:
+            df_incidencia_atraso = gerador_consulta.obter_variacao_flag_atraso(
+                flag_partida_chegada="CHEGADA",
+                flag_atraso="Vôo Atrasado",
+                sigla_empresa=nome_empresa.split("-")[0]
+                if nome_empresa is not None
+                else nome_empresa,
+                sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+            )
+            visualizacao_incidencia = Visualizacao(dataframe=df_incidencia_atraso)
+            fig = visualizacao_incidencia.gerar_grafico_variacao_voo(
+                coluna_x="NOME_MES_CHEGADA_PREVISTA",
+                coluna_y_atual="TOTAL_ATRASO",
+                coluna_y_anterior="TOTAL_ATRASO_DESLOCADO",
+                cor_grafico_barra=None,
+                cor_grafico_scatter=None,
+                legenda_valor_anterior="Valor Mês anterior",
+                legenda_valor_atual="Valor Mês atual",
+                titulo_grafico="Teste",
+            )
+            st.plotly_chart(fig)
