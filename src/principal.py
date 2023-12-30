@@ -206,6 +206,16 @@ with st.container():
 with st.container():
     col1, col2 = st.columns(2)
     with col1:
+        faixa_atraso = st.selectbox(
+            "Escolha a faixa Atraso",
+            [
+                "No horário",
+                "Atraso de até 30 minutos",
+                "Atraso de até 1 hora",
+                "Atraso de mais de 4 horas",
+            ],
+            index=0,
+        )
         tab_faixa_atraso_partida, tab_faixa_atraso_chegada = st.tabs(
             ["Faixa Atraso Partida", "Faixa Atraso Chegada"]
         )
@@ -213,10 +223,10 @@ with st.container():
         with tab_faixa_atraso_partida:
             dataframe_partida = gerador_consulta.obter_faixa_atraso_mes_anterior(
                 flag_partida_chegada="PARTIDA",
-                sigla_aeroporto="SBRP",
+                sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
                 flag_origem_destino="ORIGEM",
-                codigo_tipo_linha="N",
-                faixa_atraso="Atraso de até 30 minutos",
+                codigo_tipo_linha=opcao_codigo_voo.split("-")[0],
+                faixa_atraso=faixa_atraso,
             )
             dataframe_partida
         with tab_faixa_atraso_chegada:
@@ -225,7 +235,7 @@ with st.container():
                 sigla_aeroporto="SBRP",
                 flag_origem_destino="DESTINO",
                 codigo_tipo_linha="N",
-                faixa_atraso="Atraso de até 30 minutos",
+                faixa_atraso=faixa_atraso,
             )
             dataframe_chegada
     with col2:
