@@ -350,3 +350,112 @@ class GeradorConsulta:
         )
 
         return dataframe
+
+    def obter_faixa_atraso_mes_anterior(
+        self,
+        flag_origem_destino: str,
+        flag_partida_chegada: str,
+        codigo_tipo_linha: str,
+        faixa_atraso: str,
+        sigla_aeroporto: str,
+        sigla_empresa: str = None,
+    ):
+        colunas = [
+            f"NOME_AEROPORTO_{flag_origem_destino}",
+            "SIGLA_ICAO_EMPRESA_AEREA",
+            f"SIGLA_ICAO_AEROPORTO_{flag_origem_destino}",
+            "CODIGO_TIPO_LINHA",
+            "NOME_EMPRESA",
+            f"FAIXA_ATRASO_{flag_partida_chegada}",
+            "SITUACAO_VOO",
+            f"NOME_MES_{flag_partida_chegada}_PREVISTA",
+            f"MES_{flag_partida_chegada}_PREVISTA",
+        ]
+        query = (
+            f'  CODIGO_TIPO_LINHA == "{codigo_tipo_linha}" '
+            f' and FAIXA_ATRASO_{flag_partida_chegada} == "{faixa_atraso}" '
+            f' and SIGLA_ICAO_AEROPORTO_{flag_origem_destino} == "{sigla_aeroporto}" '
+        )
+        if sigla_empresa is not None:
+            query += f' and SIGLA_ICAO_EMPRESA_AEREA == "{sigla_empresa}" '
+        dataframe = self.__abrir_dataframe(colunas=colunas)
+        dataframe = dataframe.query(' SITUACAO_VOO != "CANCELADO"')
+        dataframe.drop("SITUACAO_VOO", axis=1)
+        dataframe = dataframe.query(query)
+        dataframe[
+            [
+                f"NOME_MES_{flag_partida_chegada}_PREVISTA",
+                f"FAIXA_ATRASO_{flag_partida_chegada}",
+            ]
+        ] = dataframe[
+            [
+                f"NOME_MES_{flag_partida_chegada}_PREVISTA",
+                f"FAIXA_ATRASO_{flag_partida_chegada}",
+            ]
+        ].astype(
+            "string"
+        )
+        dataframe = (
+            dataframe.groupby(
+                [
+                    f"FAIXA_ATRASO_{flag_partida_chegada}",
+                    f"NOME_MES_{flag_partida_chegada}_PREVISTA",
+                    f"MES_{flag_partida_chegada}_PREVISTA",
+                ],
+                observed=False,
+            )
+            .agg(TOTAL_FAIXA=(f"FAIXA_ATRASO_{flag_partida_chegada}", "count"))
+            .reset_index()
+            .sort_values(
+                by=[
+                    f"FAIXA_ATRASO_{flag_partida_chegada}",
+                    f"MES_{flag_partida_chegada}_PREVISTA",
+                ]
+            )
+        )
+        dataframe["TOTAL_FAIXA_MES_ANTERIOR"] = dataframe["TOTAL_FAIXA"].shift(1)
+        dataframe.fillna("0", axis=1, inplace=True)
+
+        return dataframe
+
+    def obter_top_dez_faixa_atraso(
+        self,
+        flag_origem_destino: str,
+        flag_partida_chegada: str,
+        codigo_tipo_linha: str,
+        mes: int,
+        faixa_atraso: str,
+        sigla_aeroporto: str,
+    ):
+        colunas = [
+            f"NOME_AEROPORTO_{flag_origem_destino}",
+            "SIGLA_ICAO_EMPRESA_AEREA",
+            f"SIGLA_ICAO_AEROPORTO_{flag_origem_destino}",
+            "CODIGO_TIPO_LINHA",
+            "NOME_EMPRESA",
+            f"FAIXA_ATRASO_{flag_partida_chegada}",
+            "SITUACAO_VOO",
+            f"NOME_MES_{flag_partida_chegada}_PREVISTA",
+            f"MES_{flag_partida_chegada}_PREVISTA",
+        ]
+        query = (
+            f'  CODIGO_TIPO_LINHA == "{codigo_tipo_linha}" '
+            f' and FAIXA_ATRASO_{flag_partida_chegada} == "{faixa_atraso}" '
+            f" and MES_{flag_partida_chegada}_PREVISTA == {mes} "
+            f' and SIGLA_ICAO_AEROPORTO_{flag_origem_destino} == "{sigla_aeroporto}" '
+        )
+        dataframe = self.__abrir_dataframe(colunas=colunas)
+        dataframe = dataframe.query(' SITUACAO_VOO != "CANCELADO"')
+        dataframe.drop("SITUACAO_VOO", axis=1)
+        dataframe = dataframe.query(query)
+        dataframe[f"FAIXA_ATRASO_{flag_partida_chegada}"] = dataframe[
+            f"FAIXA_ATRASO_{flag_partida_chegada}"
+        ].astype("str")
+        dataframe = (
+            dataframe.groupby("NOME_EMPRESA")
+            .agg(TOTAL_FAIXA=(f"FAIXA_ATRASO_{flag_partida_chegada}", "count"))
+            .reset_index()
+            .sort_values(by="TOTAL_FAIXA", ascending=False)
+        )
+
+        return dataframe

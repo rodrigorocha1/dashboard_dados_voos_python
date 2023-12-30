@@ -206,12 +206,29 @@ with st.container():
 with st.container():
     col1, col2 = st.columns(2)
     with col1:
-        tab_faixa_atraso_saida, tab_faixa_atraso_chegada = st.tabs(
+        tab_faixa_atraso_partida, tab_faixa_atraso_chegada = st.tabs(
             ["Faixa Atraso Partida", "Faixa Atraso Chegada"]
         )
-        with tab_faixa_atraso_saida:
-            st.write("faixa atraso saída")
+
+        with tab_faixa_atraso_partida:
+            dataframe_partida = gerador_consulta.obter_faixa_atraso_mes_anterior(
+                flag_partida_chegada="PARTIDA",
+                sigla_aeroporto="SBRP",
+                flag_origem_destino="ORIGEM",
+                codigo_tipo_linha="N",
+                faixa_atraso="Atraso de até 30 minutos",
+            )
+            dataframe_partida
         with tab_faixa_atraso_chegada:
-            st.write("faixa atraso_chegada")
+            dataframe_chegada = gerador_consulta.obter_faixa_atraso_mes_anterior(
+                flag_partida_chegada="CHEGADA",
+                sigla_aeroporto="SBRP",
+                flag_origem_destino="DESTINO",
+                codigo_tipo_linha="N",
+                faixa_atraso="Atraso de até 30 minutos",
+            )
+            dataframe_chegada
     with col2:
-        st.write("TOP 10")
+        tab_top_dez_faixa_atraso_partida, tab_top_dez_faixa_atraso_chegada = st.tabs(
+            ["TOP 10 Faixa Atraso Partida", "TOP 10 Faixa Atraso Chegada"]
+        )
