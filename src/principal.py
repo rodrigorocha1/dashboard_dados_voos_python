@@ -202,3 +202,16 @@ with st.container():
                 titulo_grafico="Teste",
             )
             st.plotly_chart(fig)
+
+with st.container():
+    col1, col2 = st.columns(2)
+    with col1:
+        tab_faixa_atraso_saida, tab_faixa_atraso_chegada = st.tabs(
+            ["Faixa Atraso Partida", "Faixa Atraso Chegada"]
+        )
+        with tab_faixa_atraso_saida:
+            st.write("faixa atraso saída")
+        with tab_faixa_atraso_chegada:
+            st.write("faixa atraso_chegada")
+    with col2:
+        st.write("TOP 10")
