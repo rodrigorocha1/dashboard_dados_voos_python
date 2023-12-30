@@ -204,18 +204,18 @@ with st.container():
             st.plotly_chart(fig)
 
 with st.container():
+    faixa_atraso = st.selectbox(
+        "Escolha a faixa Atraso",
+        [
+            "No horário",
+            "Atraso de até 30 minutos",
+            "Atraso de até 1 hora",
+            "Atraso de mais de 4 horas",
+        ],
+        index=0,
+    )
     col1, col2 = st.columns(2)
     with col1:
-        faixa_atraso = st.selectbox(
-            "Escolha a faixa Atraso",
-            [
-                "No horário",
-                "Atraso de até 30 minutos",
-                "Atraso de até 1 hora",
-                "Atraso de mais de 4 horas",
-            ],
-            index=0,
-        )
         tab_faixa_atraso_partida, tab_faixa_atraso_chegada = st.tabs(
             ["Faixa Atraso Partida", "Faixa Atraso Chegada"]
         )
@@ -232,9 +232,9 @@ with st.container():
         with tab_faixa_atraso_chegada:
             dataframe_chegada = gerador_consulta.obter_faixa_atraso_mes_anterior(
                 flag_partida_chegada="CHEGADA",
-                sigla_aeroporto="SBRP",
+                sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
                 flag_origem_destino="DESTINO",
-                codigo_tipo_linha="N",
+                codigo_tipo_linha=opcao_codigo_voo.split("-")[0],
                 faixa_atraso=faixa_atraso,
             )
             dataframe_chegada
@@ -242,3 +242,23 @@ with st.container():
         tab_top_dez_faixa_atraso_partida, tab_top_dez_faixa_atraso_chegada = st.tabs(
             ["TOP 10 Faixa Atraso Partida", "TOP 10 Faixa Atraso Chegada"]
         )
+        with tab_top_dez_faixa_atraso_partida:
+            dataframe_top_dez_partida = gerador_consulta.obter_top_dez_faixa_atraso(
+                flag_partida_chegada="PARTIDA",
+                flag_origem_destino="ORIGEM",
+                codigo_tipo_linha=opcao_codigo_voo.split("-")[0],
+                mes=12,
+                faixa_atraso=faixa_atraso,
+                sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+            )
+            dataframe_top_dez_partida
+        with tab_top_dez_faixa_atraso_chegada:
+            dataframe_top_10_chegada = gerador_consulta.obter_top_dez_faixa_atraso(
+                flag_partida_chegada="CHEGADA",
+                flag_origem_destino="DESTINO",
+                codigo_tipo_linha=opcao_codigo_voo.split("-")[0],
+                mes=12,
+                faixa_atraso=faixa_atraso,
+                sigla_aeroporto=nome_aeroporto_origem.split("-")[0],
+            )
+            dataframe_top_10_chegada
