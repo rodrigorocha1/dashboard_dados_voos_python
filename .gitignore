@@ -91,3 +91,4 @@ target/
 # Mypy cache
 .mypy_cache/
 src/depara/__pycache__/depara.cpython-310.pyc
+src/depara/__pycache__/depara.cpython-310.pyc
