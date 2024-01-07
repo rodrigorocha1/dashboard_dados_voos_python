@@ -1,0 +1,16 @@
+.metric {
+    width: 150px;
+    height: 100px;
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+}
+
+.metric.green {
+    background-color: green;
+}
+
+.metric.red {
+    background-color: red;
+}

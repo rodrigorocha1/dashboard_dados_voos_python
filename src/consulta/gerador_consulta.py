@@ -457,5 +457,4 @@ class GeradorConsulta:
             .reset_index()
             .sort_values(by="TOTAL_FAIXA", ascending=False)
         )
-
         return dataframe

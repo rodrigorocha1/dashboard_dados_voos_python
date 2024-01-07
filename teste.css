@@ -1,0 +1,8 @@
+.stButton>button {
+    background-color: red;
+}
+
+[data-testid="stMetric"] {
+    background-color: blue;
+    width: 50vh;
+}
