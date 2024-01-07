@@ -7,6 +7,10 @@ st.set_page_config(layout="wide", page_title="Dashboard dados vôos")
 st.title("Análise de dados dos Vôos do Ano de 2022")
 
 
+with open("src/estilos/styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+
 with st.sidebar:
     opcao_codigo_voo = st.radio(
         "Selecione o código do vôo",
